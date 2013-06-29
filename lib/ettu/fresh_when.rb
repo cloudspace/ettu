@@ -14,6 +14,8 @@ module Ettu
           etags << ettu.js_etag
           etags << ettu.css_etag
         end
+        assets = ettu.options.fetch(:assets, []).map { |asset| ettu.asset_etag(asset) }
+        etags.concat assets
 
         ettu_params = {etag: etags, last_modified: ettu.last_modified}
 
