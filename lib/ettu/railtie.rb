@@ -4,7 +4,7 @@ module Ettu
       require 'ettu'
 
       ActiveSupport.on_load :action_controller do
-        ActionController::Base.send :include, ::Ettu::FreshWhen
+        ActionController::Base.send :include, Ettu::FreshWhen
       end
     end
   end
