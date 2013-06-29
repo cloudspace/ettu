@@ -10,7 +10,7 @@ module Ettu
         @record = record_or_options
         @options = additional_options
       end
-      @asset_etags = []
+      @asset_etags = {}
     end
 
     def response_etag
