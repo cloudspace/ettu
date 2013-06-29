@@ -19,7 +19,7 @@ module Ettu
 
         ettu_params = {etag: etags, last_modified: ettu.last_modified}
 
-        old_fresh_when ettu.options.merge(ettu_params)
+        old_fresh_when nil, ettu.options.merge(ettu_params)
       end
 
     end
