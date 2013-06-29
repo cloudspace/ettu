@@ -21,8 +21,8 @@ module Ettu
       @options.fetch(:last_modified, @record.try(:updated_at))
     end
 
-    def view_etag(view)
-      @view_etag ||= view_digest(view)
+    def view_etag(view, format, lookup_context)
+      @view_etag ||= view_digest(view, format, lookup_context)
     end
 
     def asset_etag(asset)
@@ -43,14 +43,12 @@ module Ettu
 
     # Jeremy Kemper
     # https://gist.github.com/jeremy/4211803
-    def view_digest(view)
-      CacheDigests::TemplateDigestor.digest(
+    def view_digest(view, format, lookup_context)
+      ActionView::Digestor.digest(
         view,
-        request.format.try(:to_sym),
+        format,
         lookup_context
       )
-    rescue ActionView::MissingTemplate
-      '' # Ignore missing templates
     end
 
     # Jeremy Kemper

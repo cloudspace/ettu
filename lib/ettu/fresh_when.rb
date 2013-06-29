@@ -10,7 +10,8 @@ module Ettu
 
         etags = [*ettu.response_etag]
         if view = ettu.options.fetch(:view, "#{controller_name}/#{action_name}")
-          etags << ettu.view_etag(view)
+          # TODO: This is ugly. How do we clean it up?
+          etags << ettu.view_etag(view, request.format.try(:to_sym), lookup_context)
         end
         if request.format.try(:html?)
           etags << ettu.js_etag
