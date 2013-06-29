@@ -2,8 +2,8 @@ module Ettu
   class Ettu
     attr_reader :options
 
-    def initialize(record_or_options, additional_options)
-      if options.is_a Hash
+    def initialize(record_or_options = nil, additional_options = {})
+      if record_or_options.is_a? Hash
         @record = nil
         @options = record_or_options
       else
