@@ -9,7 +9,9 @@ module Ettu
         ettu = Ettu.new(record_or_options, additional_options)
 
         etags = [*ettu.response_etag]
-        etags << ettu.view_etag
+        if view = ettu.options.fetch(:view, "#{controller_name}/#{action_name}")
+          etags << ettu.view_etag(view)
+        end
         if request.format.try(:html?)
           etags << ettu.js_etag
           etags << ettu.css_etag
