@@ -10,6 +10,7 @@ module Ettu
         @record = record_or_options
         @options = additional_options
       end
+      @asset_etags = []
     end
 
     def response_etag
@@ -20,41 +21,25 @@ module Ettu
       @options.fetch(:last_modified, @record.try(:updated_at))
     end
 
-    def js_etag
-      @js_etag ||= js_digest
-    end
-
-    def css_etag
-      @css_etag ||= css_digest
-    end
-
     def view_etag
       @view_etag ||= view_digest
     end
 
+    def asset_etag(asset)
+      @asset_etags[asset] ||= asset_digest(asset)
+    end
+
+    def js_etag
+      js = @options.fetch(:js, 'application.js')
+      asset_etag js
+    end
+
+    def css_etag
+      css = @options.fetch(:css, 'application.css')
+      asset_etag css
+    end
+
     private
-
-    def ettu_params
-      @ettu_params ||= extract_ettu_params
-    end
-
-    def extract_ettu_params
-      js = @options.fetch(:js, nil)
-      css = @options.fetch(:css, nil)
-
-      js = 'application.js' if js.nil?
-      css = 'application.css' if css.nil?
-
-      { js: js, css: css }
-    end
-
-    def css_digest
-      asset_digest(ettu_params[:css])
-    end
-
-    def js_digest
-      asset_digest(ettu_params[:js])
-    end
 
     # Jeremy Kemper
     # https://gist.github.com/jeremy/4211803
