@@ -7,6 +7,7 @@
 
 require 'date'
 require 'active_support/ordered_options'
+require 'fixtures'
 
 require 'simplecov'
 SimpleCov.start { add_filter '/spec/' }
