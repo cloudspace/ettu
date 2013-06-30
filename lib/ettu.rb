@@ -89,6 +89,8 @@ class Ettu
   # Check precompiled asset manifest (production) or compute the digest (dev).
   def asset_digest(asset)
     return nil unless asset.present?
+    # Is Rails.application.config.assets.digests needed?
+    # Seems to always be nil...
     if manifest = Rails.application.config.assets.digests
       manifest[asset]
     else
