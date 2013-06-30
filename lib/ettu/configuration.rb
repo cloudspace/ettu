@@ -2,7 +2,16 @@ class Ettu
   class Configuration < ActiveSupport::OrderedOptions
     def initialize
       super
+      set_defaults
+    end
 
+    def reset
+      set_defaults
+    end
+
+    private
+
+    def set_defaults
       self.js = 'application.js'
       self.css = 'application.css'
       self.assets = []
