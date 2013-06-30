@@ -17,7 +17,7 @@ module Rails
   end
 end
 
-describe Ettu::Ettu do
+describe Ettu do
   let(:record) { Record.new(DateTime.now) }
   let(:hash) { { etag: record, last_modified: DateTime.now, public: false, random: true } }
 
@@ -32,7 +32,7 @@ describe Ettu::Ettu do
   xit '#view_etag'
 
   context 'when given only a record' do
-    subject(:ettu) { Ettu::Ettu.new(record) }
+    subject(:ettu) { Ettu.new(record) }
 
     it 'makes #options an empty hash' do
       expect(ettu.options).to be_a(Hash)
@@ -48,7 +48,7 @@ describe Ettu::Ettu do
   end
 
   context 'when given only a hash' do
-    subject(:ettu) { Ettu::Ettu.new(hash) }
+    subject(:ettu) { Ettu.new(hash) }
 
     it 'sets #options to that hash' do
       expect(ettu.options).to eq(hash)
@@ -65,7 +65,7 @@ describe Ettu::Ettu do
 
   context 'when given a record and hash' do
     let(:hash) { { public: true } }
-    subject(:ettu) { Ettu::Ettu.new(record, hash) }
+    subject(:ettu) { Ettu.new(record, hash) }
 
     describe '#response_etag' do
       it 'uses record as #response_etag' do 
