@@ -1,4 +1,4 @@
-module Ettu
+class Ettu
   module FreshWhen
     extend ActiveSupport::Concern
 

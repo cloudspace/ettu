@@ -1,3 +1,3 @@
-module Ettu
+class Ettu
   VERSION = '0.0.3'
 end

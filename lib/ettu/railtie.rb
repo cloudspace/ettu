@@ -1,4 +1,4 @@
-module Ettu
+class Ettu
   class Railtie < Rails::Railtie
     config.ettu = ActiveSupport::OrderedOptions.new
 
