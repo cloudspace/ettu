@@ -83,6 +83,28 @@ implementation. Ettu makes sure to pass all the options you specify to
 Rails (like the `public` option). It's even coded as a drop-in gem that
 won't cause problems if it's not installed.
 
+## RAILS_ENV=development Issues
+
+Until [rails/rails#10791](https://github.com/rails/rails/pull/10791)
+gets merged in, Ettu will not be able to detect changes in templates
+while in the **development** environment. This is not an issue that
+affects staging or production, because the template cache will be
+recreated after each deploy.
+
+In the mean time, you can monkey-patch around this:
+
+```ruby
+# config/environments/development.rb
+class BlackHole < Hash
+    def []=(k, v); end
+end
+module ActionView
+  class Digestor
+    @@cache = BlackHole.new
+  end
+end
+```
+
 ## Contributing
 
 1. Fork it
