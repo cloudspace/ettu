@@ -4,6 +4,7 @@ require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/object/try'
 
 require 'ettu/version'
+require 'ettu/configuration'
 require 'ettu/fresh_when'
 require 'ettu/railtie' if defined? Rails
 
@@ -11,15 +12,7 @@ class Ettu
   attr_reader :options
 
   class << self
-    @@config = ActiveSupport::OrderedOptions.new
-    @@config.js = 'application.js'
-    @@config.css = 'application.css'
-    @@config.assets = []
-    @@config.template_digestor = if defined? ActionView::Digestor
-                                   ActionView::Digestor
-                                 else
-                                   nil
-                                 end
+    @@config = Configuration.new
 
     def configure
       yield @@config
