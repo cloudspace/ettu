@@ -14,6 +14,14 @@ module Rails
   end
 end
 
+Rails.application.assets['application.js'].digest = 'application.js.digest'
+Rails.application.assets['application.css'].digest = 'application.css.digest'
+Rails.application.assets['custom.js'].digest = 'custom.js.digest'
+Rails.application.assets['custom.css'].digest = 'custom.css.digest'
+Rails.application.assets['first.ext'].digest = 'first.ext.digest'
+Rails.application.assets['second.ext'].digest = 'second.ext.digest'
+Rails.application.config.assets.digests = nil
+
 describe Ettu do
   let(:record) { Record.new(DateTime.now) }
   let(:hash) { { etag: record, last_modified: DateTime.now, public: false, random: true } }
