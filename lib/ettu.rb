@@ -43,10 +43,6 @@ class Ettu
     @view_etag ||= view_digest(view, format, lookup_context)
   end
 
-  def asset_etag(asset)
-    @asset_etags[asset] ||= asset_digest(asset)
-  end
-
   def js_etag
     js = @options.fetch(:js, @@config.js)
     asset_etag js
@@ -57,7 +53,16 @@ class Ettu
     asset_etag css
   end
 
+  def asset_etags
+    assets = @config.fetch(:assets, @@config.assets)
+    [*assets].map { |asset| asset_etag(asset) }
+  end
+
   private
+
+  def asset_etag(asset)
+    @asset_etags[asset] ||= asset_digest(asset)
+  end
 
   # Jeremy Kemper
   # https://gist.github.com/jeremy/4211803
