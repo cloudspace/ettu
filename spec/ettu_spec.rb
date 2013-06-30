@@ -23,22 +23,56 @@ Rails.application.assets['second.ext'].digest = 'second.ext.digest'
 Rails.application.config.assets.digests = nil
 
 describe Ettu do
+  before(:each) { Ettu.configure { |config| config.reset } }
   let(:record) { Record.new(DateTime.now) }
-  let(:hash) { { etag: record, last_modified: DateTime.now, public: false, random: true } }
+  let(:hash) { { etag: record, last_modified: DateTime.now } }
 
-  context 'when supplied with :js option' do
-    xit "returns hash[:js]'s fingerprint as #js_etag"
-  end
+  context 'when supplied with options' do
+    let(:hash) { { js: 'custom.js', css: 'custom.css', assets: 'first.ext' } }
+    subject(:ettu) { Ettu.new(hash) }
 
-  context 'when supplied with :css option' do
-    xit "returns hash[:css]'s fingerprint as #css_etag"
+    it 'will use :js option over default' do
+      expect(ettu.js_etag).to eq('custom.js.digest')
+    end
+
+    it 'will use :css option over default' do
+      expect(ettu.css_etag).to eq('custom.css.digest')
+    end
+
+    it 'will use :asset option over default' do
+      expect(ettu.asset_etags).to eq(['first.ext.digest'])
+    end
   end
 
   xit '#view_etag'
 
-
   context '.configure' do
+    subject(:ettu) { Ettu.new }
+    context 'can configure default js file' do
+      it 'will use that js file when none is specified' do
+        Ettu.configure { |config| config.js = 'custom.js' }
+        expect(ettu.js_etag).to eq('custom.js.digest')
+      end
+    end
 
+    context 'can configure default css file' do
+      it 'will use that css file when none is specified' do
+        Ettu.configure { |config| config.css = 'custom.css' }
+        expect(ettu.css_etag).to eq('custom.css.digest')
+      end
+    end
+
+    context 'can configure default asset file' do
+      it 'will use that file when none is specified' do
+        Ettu.configure { |config| config.assets = 'first.ext' }
+        expect(ettu.asset_etags).to eq(['first.ext.digest'])
+      end
+
+      it 'can configure multiple default asset files' do
+        Ettu.configure { |config| config.assets = ['first.ext', 'second.ext'] }
+        expect(ettu.asset_etags).to eq(['first.ext.digest', 'second.ext.digest'])
+      end
+    end
   end
 
 
