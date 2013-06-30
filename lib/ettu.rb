@@ -28,12 +28,22 @@ class Ettu
     end
   end
 
-  def response_etag
-    @options.fetch(:etag, @record)
+  def etags
+    etags = [*response_etag]
+    etags << view_etag
+    if @controller.request.format.try(:html?)
+      etags << js_etag
+      etags << css_etag
+    end
+    etags.concat asset_etags
   end
 
   def last_modified
     @options.fetch(:last_modified, @record.try(:updated_at))
+  end
+
+  def response_etag
+    @options.fetch(:etag, @record)
   end
 
   def view_etag
