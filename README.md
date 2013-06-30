@@ -33,15 +33,15 @@ Rails 4 ETags can be used in the following way:
 
 ```ruby
 class ProductsController < ApplicationController
-    def show
-        @product = Product.find(params[:id])
+  def show
+    @product = Product.find(params[:id])
 
-        # Sugar syntax
-        fresh_when @product
+    # Sugar syntax
+    fresh_when @product
 
-        # Hash syntax
-        fresh_when etag: @product, last_modified: @product.updated_at, public: true
-    end
+    # Hash syntax
+    fresh_when etag: @product, last_modified: @product.updated_at, public: true
+  end
 end
 ```
 
@@ -52,6 +52,15 @@ the current action into the calculation for the final ETag sent to the
 browser.
 
 ### Configuring
+
+Ettu can be disabled for any environment using the `ettu.disabled`
+config option.
+
+```ruby
+My::Application.configure do
+  config.ettu.disabled = true
+end
+```
 
 Of course, you can override Ettu's behavior. Using a custom js file?
 Just pass in like so:
@@ -91,17 +100,12 @@ while in the **development** environment. This is not an issue that
 affects staging or production, because the template cache will be
 recreated after each deploy.
 
-In the mean time, you can monkey-patch around this:
+In the mean time, you can enable a monkey-patch with:
 
 ```ruby
 # config/environments/development.rb
-class BlackHole < Hash
-    def []=(k, v); end
-end
-module ActionView
-  class Digestor
-    @@cache = BlackHole.new
-  end
+My::Application.configure do
+  config.ettu.development_hack = true
 end
 ```
 
