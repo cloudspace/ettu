@@ -1,9 +1,12 @@
 require 'spec_helper'
 
 describe Ettu do
-  before(:each) { Ettu.configure { |config| config.reset } }
+  let(:controller) { Controller.new }
   let(:record) { Record.new(DateTime.now) }
   let(:hash) { { etag: record, last_modified: DateTime.now } }
+  before(:all) do
+    Ettu.configure { |config| config.template_digestor = Digestor }
+  end
 
   context 'when supplied with options' do
     let(:hash) { { js: 'custom.js', css: 'custom.css', assets: 'first.ext' } }
@@ -24,35 +27,67 @@ describe Ettu do
 
   xit '#view_etag'
 
-  context '.configure' do
-    subject(:ettu) { Ettu.new }
-    context 'can configure default js file' do
-      it 'will use that js file when none is specified' do
-        Ettu.configure { |config| config.js = 'custom.js' }
+  describe '.configure' do
+    subject(:ettu) { Ettu.new(nil, {}, controller) }
+
+    context 'when no options are specified' do
+      before(:all) do
+        Ettu.configure do |config|
+          config.js = 'custom.js'
+          config.css = 'custom.css'
+          config.assets = ['first.ext', 'second.ext']
+          config.view = 'custom/view'
+        end
+      end
+      after(:all) { Ettu.configure { |config| config.reset } }
+
+      it 'will use the default js file' do
         expect(ettu.js_etag).to eq('custom.js.digest')
       end
-    end
 
-    context 'can configure default css file' do
-      it 'will use that css file when none is specified' do
-        Ettu.configure { |config| config.css = 'custom.css' }
+      it 'will use the default css file' do
         expect(ettu.css_etag).to eq('custom.css.digest')
       end
-    end
 
-    context 'can configure default asset file' do
-      it 'will use that file when none is specified' do
-        Ettu.configure { |config| config.assets = 'first.ext' }
-        expect(ettu.asset_etags).to eq(['first.ext.digest'])
+      it 'will use the default asset files' do
+        expect(ettu.asset_etags).to eq(['first.ext.digest', 'second.ext.digest'])
       end
 
-      it 'can configure multiple default asset files' do
-        Ettu.configure { |config| config.assets = ['first.ext', 'second.ext'] }
-        expect(ettu.asset_etags).to eq(['first.ext.digest', 'second.ext.digest'])
+      it 'will use the default view file' do
+        expect(ettu.view_etag).to eq('custom/view.digest')
+      end
+    end
+
+    context 'when setting default to false' do
+      before(:all) do
+        Ettu.configure do |config|
+          config.js = false
+          config.css = false
+          config.view = false
+        end
+      end
+      after(:all) { Ettu.configure { |config| config.reset } }
+
+      it 'will disable js etag' do
+        expect(ettu.js_etag).to eq(nil)
+      end
+
+      it 'will disable css etag' do
+        expect(ettu.css_etag).to eq(nil)
+      end
+
+      it 'will disable view etags' do
+        expect(ettu.view_etag).to eq(nil)
       end
     end
   end
 
+  describe '#etags' do
+    let(:ettu) { Ettu.new(record, {}, controller) }
+    it 'will collect all etags' do
+      expect(ettu.etags).to eq([record, 'controller_mock/action_name.digest', 'application.js.digest', 'application.css.digest'])
+    end
+  end
 
   context 'when given only a record' do
     subject(:ettu) { Ettu.new(record) }
