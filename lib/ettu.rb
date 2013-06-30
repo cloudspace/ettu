@@ -6,7 +6,7 @@ require 'active_support/core_ext/object/try'
 require 'ettu/version'
 require 'ettu/configuration'
 require 'ettu/fresh_when'
-require 'ettu/railtie' if defined? Rails
+require 'ettu/railtie' if defined? Rails::Railtie
 
 class Ettu
   attr_reader :options
@@ -76,6 +76,7 @@ class Ettu
   # Jeremy Kemper
   # https://gist.github.com/jeremy/4211803
   def view_digest(view)
+    return nil unless view.present?
     @@config.template_digestor.digest(
       view,
       @controller.request.format.try(:to_sym),
