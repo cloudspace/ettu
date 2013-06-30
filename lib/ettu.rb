@@ -20,14 +20,11 @@ class Ettu
   end
 
   def initialize(record_or_options = nil, additional_options = {}, controller = nil)
-    @controller = controller
-    @asset_etags = {}
+    @controller, @asset_etags = controller, {}
     if record_or_options.is_a? Hash
-      @record = nil
-      @options = record_or_options
+      @record, @options = nil, record_or_options
     else
-      @record = record_or_options
-      @options = additional_options
+      @record, @options = record_or_options, additional_options
     end
   end
 
