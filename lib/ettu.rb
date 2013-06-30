@@ -22,7 +22,7 @@ class Ettu
     end
   end
 
-  def initialize(controller, record_or_options = nil, additional_options = {})
+  def initialize(record_or_options = nil, additional_options = {}, controller = nil)
     @controller = controller
     @asset_etags = {}
     if record_or_options.is_a? Hash
