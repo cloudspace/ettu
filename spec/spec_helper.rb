@@ -5,10 +5,13 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require 'ettu'
 require 'date'
 require 'active_support/ordered_options'
 
+require 'simplecov'
+SimpleCov.start { add_filter '/spec/' }
+
+require 'ettu'
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.order = 'random'
