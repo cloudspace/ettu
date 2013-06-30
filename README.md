@@ -57,28 +57,40 @@ Ettu can be disabled for any environment using the `ettu.disabled`
 config option.
 
 ```ruby
+# config/environments/*.rb
 My::Application.configure do
   config.ettu.disabled = true
 end
 ```
 
-Of course, you can override Ettu's behavior. Using a custom js file?
-Just pass in like so:
+Of course, you can override Ettu's default behavior:
 
-    fresh_when @product, js: 'custom.js'
+```ruby
+# config/initializers/ettu.rb
+Ettu.configure do |config|
+  # Set the default js file
+  config.js = 'app.js'
+  # Or don't account for javascript
+  # config.js = false
 
-The same things goes for custom css files:
+  # Set the default css file
+  config.css = 'style.css'
+  # Or don't account for css
+  # config.css = false
 
-    fresh_when @product, css: 'custom.css'
+  # Add in extra assets to account for
+  config.assets = ['first.js', 'second.css']
+end
+```
 
-Have several other assets you want to account for? Pass them in as an
-array with the `assets` key:
+Or each can be passed on an individual basis:
 
-    fresh_when @product, assets: ['first.css', 'second.js']
+    fresh_when @product, js: 'app.js', css: 'style.css', assets: 'super.css'
 
-You can specify a template with the `view` key:
+Additionally, you can specify a different template to calculate with the
+`view` option:
 
-    fresh_when @product, "products/index"
+    fresh_when @product, view: "products/index"
 
 You can even stop Ettu from accounting for any of them by setting the
 value to `false`:
