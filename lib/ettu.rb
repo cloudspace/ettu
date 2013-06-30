@@ -15,7 +15,11 @@ class Ettu
     @@config.js = 'application.js'
     @@config.css = 'application.css'
     @@config.assets = []
-    @@config.template_digestor = ActionView::Digestor
+    @@config.template_digestor = if defined? ActionView::Digestor
+                                   ActionView::Digestor
+                                 else
+                                   nil
+                                 end
 
     def configure
       yield @@config
