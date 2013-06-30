@@ -1,6 +1,11 @@
 require 'spec_helper'
 
-Record = Struct.new(:updated_at)
+class Record
+  attr_accessor :updated_at
+  def initialize(updated_at)
+    @updated_at = updated_at
+  end
+end
 class Nested < ActiveSupport::OrderedOptions
   def initialize
     super { |h, k| h[k] = Nested.new }
@@ -13,6 +18,16 @@ module Rails
     @nested ||= Nested.new
   end
 end
+class DigestorMock
+  def self.method_missing(name, *args, &block)
+    args.first.to_s + '.digest'
+  end
+end
+
+$controller_mock = Nested.new
+$controller_mock.request.format['html?'] = true
+$controller_mock.controller_name = 'controller_mock'
+$controller_mock.action_name = 'action_name'
 
 Rails.application.assets['application.js'].digest = 'application.js.digest'
 Rails.application.assets['application.css'].digest = 'application.css.digest'
