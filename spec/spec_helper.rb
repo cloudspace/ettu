@@ -7,6 +7,7 @@
 
 require 'ettu'
 require 'date'
+require 'active_support/ordered_options'
 
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true

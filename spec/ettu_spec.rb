@@ -1,19 +1,16 @@
 require 'spec_helper'
 
 Record = Struct.new(:updated_at)
-Nested = Struct.new(:nil) do
-  def [](name)
-    nil
-  end
-  def method_missing(name, *args, &block)
-    return self
+class Nested < ActiveSupport::OrderedOptions
+  def initialize
+    super { |h, k| h[k] = Nested.new }
   end
 end
 module Rails
   module Railtie; end
 
   def self.application
-    Nested.new(nil)
+    @nested ||= Nested.new
   end
 end
 
