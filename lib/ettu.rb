@@ -9,6 +9,17 @@ require 'ettu/railtie' if defined? Rails
 class Ettu
   attr_reader :options
 
+  class << self
+    @@config = ActiveSupport::OrderedOptions.new
+    @@config.js = 'application.js'
+    @@config.css = 'application.css'
+    @@config.assets = []
+
+    def configure
+      yield @@config
+    end
+  end
+
   def initialize(record_or_options = nil, additional_options = {})
     if record_or_options.is_a? Hash
       @record = nil
