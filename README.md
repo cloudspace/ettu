@@ -7,9 +7,9 @@ yourself.
 
 Ettu (loosely translated "And calculate you, too?") transparently
 accounts for the current action's view code (JavaScript, CSS, templates)
-using the same [asset fingerprints]
+using the same [asset fingerprinting]
 (http://guides.rubyonrails.org/asset_pipeline.html#what-is-fingerprinting-and-why-should-i-care-questionmark)
-and Russian Doll [cache digests]
+and Russian Doll [template cache digesting]
 (https://github.com/rails/cache_digests#readme) used by Rails. It does
 all of this while allowing you to use the same syntax you're already
 accustomed to. So keep doing what you're doing, and let Ettu worry about
@@ -24,6 +24,8 @@ Add this line to your application's Gemfile:
 And then execute:
 
     $ bundle
+
+And that's it. Ettu will be loaded on your next restart.
 
 ## Usage
 
@@ -73,7 +75,6 @@ You can even stop Ettu from accounting for any of them by setting the
 value to `false`:
 
     fresh_when @product, js: false, css: false, view: false
-
 
 ### What about Rails' default `fresh_when`?
 
