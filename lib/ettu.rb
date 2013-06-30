@@ -15,13 +15,16 @@ class Ettu
     @@config.js = 'application.js'
     @@config.css = 'application.css'
     @@config.assets = []
+    @@config.template_digestor = ActionView::Digestor
 
     def configure
       yield @@config
     end
   end
 
-  def initialize(record_or_options = nil, additional_options = {})
+  def initialize(controller, record_or_options = nil, additional_options = {})
+    @controller = controller
+    @asset_etags = {}
     if record_or_options.is_a? Hash
       @record = nil
       @options = record_or_options
@@ -29,7 +32,6 @@ class Ettu
       @record = record_or_options
       @options = additional_options
     end
-    @asset_etags = {}
   end
 
   def response_etag
@@ -40,8 +42,8 @@ class Ettu
     @options.fetch(:last_modified, @record.try(:updated_at))
   end
 
-  def view_etag(view, format, lookup_context)
-    @view_etag ||= view_digest(view, format, lookup_context)
+  def view_etag
+    @view_etag ||= view_digest
   end
 
   def js_etag
@@ -67,11 +69,11 @@ class Ettu
 
   # Jeremy Kemper
   # https://gist.github.com/jeremy/4211803
-  def view_digest(view, format, lookup_context)
-    ActionView::Digestor.digest(
-      view,
-      format,
-      lookup_context
+  def view_digest
+    @@config.template_digestor.digest(
+      "#{@controller.controller_name}/#{@controller.action_name}",
+      @controller.request.format.try(:to_sym),
+      @controller.lookup_context
     )
   end
 
