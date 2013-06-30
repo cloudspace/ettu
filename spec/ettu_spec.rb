@@ -9,8 +9,8 @@ describe Ettu do
   end
 
   context 'when supplied with options' do
-    let(:hash) { { js: 'custom.js', css: 'custom.css', assets: 'first.ext' } }
-    subject(:ettu) { Ettu.new(hash) }
+    let(:hash) { { js: 'custom.js', css: 'custom.css', assets: 'first.ext', view: 'custom/action' } }
+    subject(:ettu) { Ettu.new(hash, {}, controller) }
 
     it 'will use :js option over default' do
       expect(ettu.js_etag).to eq('custom.js.digest')
@@ -23,9 +23,11 @@ describe Ettu do
     it 'will use :asset option over default' do
       expect(ettu.asset_etags).to eq(['first.ext.digest'])
     end
-  end
 
-  xit '#view_etag'
+    it 'will use :view option over default' do
+      expect(ettu.view_etag).to eq('custom/action.digest')
+    end
+  end
 
   describe '.configure' do
     subject(:ettu) { Ettu.new(nil, {}, controller) }
@@ -85,7 +87,10 @@ describe Ettu do
   describe '#etags' do
     let(:ettu) { Ettu.new(record, {}, controller) }
     it 'will collect all etags' do
-      expect(ettu.etags).to eq([record, 'controller_mock/action_name.digest', 'application.js.digest', 'application.css.digest'])
+      expected = [record, 'controller_name/action_name.digest', 'application.js.digest', 'application.css.digest']
+      result = ettu.etags
+      expect(ettu.etags).to include(*expected)
+      expect(expected).to include(*result)
     end
   end
 
