@@ -7,12 +7,13 @@
 
 require 'date'
 require 'active_support/ordered_options'
-require 'fixtures'
 
 require 'simplecov'
 SimpleCov.start { add_filter '/spec/' }
 
 require 'ettu'
+require 'fixtures'
+
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.order = 'random'

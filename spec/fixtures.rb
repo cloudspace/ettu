@@ -9,9 +9,15 @@ class Controller < Nester
     super
 
     self.request.format['html?'] = true
-    self.controller_name = 'controller_mock'
+    self.controller_name = 'controller_name'
     self.action_name = 'action_name'
   end
+
+  def fresh_when(*args)
+    :old_fresh_when
+  end
+
+  include ::Ettu::FreshWhen
 end
 
 class Digestor
@@ -30,7 +36,7 @@ end
 
 module Rails
   def self.application
-    @nested ||= ::Nester.new
+    @nested ||= Nester.new
   end
 end
 Rails.application.assets['application.js'].digest = 'application.js.digest'
