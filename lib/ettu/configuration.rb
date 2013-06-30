@@ -19,7 +19,7 @@ class Ettu
       # Don't actually set view by default.
       # This'll allow #fetch to return the real default
       # at runtime.
-      # self.view = nil
+      # self.view = "#{controller_name}/#{action_name}"
 
       if defined? ActionView::Digestor
         self.template_digestor = ActionView::Digestor
