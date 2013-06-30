@@ -57,7 +57,7 @@ class Ettu
   end
 
   def asset_etags
-    assets = @config.fetch(:assets, @@config.assets)
+    assets = @options.fetch(:assets, @@config.assets)
     [*assets].map { |asset| asset_etag(asset) }
   end
 
