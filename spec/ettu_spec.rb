@@ -31,11 +31,21 @@ describe Ettu do
 
   xit '#view_etag'
 
+
+  context '.configure' do
+
+  end
+
+
   context 'when given only a record' do
     subject(:ettu) { Ettu.new(record) }
 
-    it 'makes #options an empty hash' do
+    it 'makes #options an hash' do
       expect(ettu.options).to be_a(Hash)
+    end
+
+    it 'makes #options an empty hash' do
+      expect(ettu.options).to be_empty
     end
 
     it 'uses record as #response_etag' do
@@ -66,6 +76,10 @@ describe Ettu do
   context 'when given a record and hash' do
     let(:hash) { { public: true } }
     subject(:ettu) { Ettu.new(record, hash) }
+
+    it 'sets #options to the hash' do
+      expect(ettu.options).to eq(hash)
+    end
 
     describe '#response_etag' do
       it 'uses record as #response_etag' do 
