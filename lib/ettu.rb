@@ -37,7 +37,9 @@ class Ettu
   end
 
   def view_etag
-    @view_etag ||= view_digest
+    default_view = @@config.fetch(:view, "#{@controller.controller_name}/#{@controller.action_name}")
+    view = @options.fetch(:view, default_view)
+    @view_etag ||= view_digest(view)
   end
 
   def js_etag
@@ -63,9 +65,9 @@ class Ettu
 
   # Jeremy Kemper
   # https://gist.github.com/jeremy/4211803
-  def view_digest
+  def view_digest(view)
     @@config.template_digestor.digest(
-      "#{@controller.controller_name}/#{@controller.action_name}",
+      view,
       @controller.request.format.try(:to_sym),
       @controller.lookup_context
     )
