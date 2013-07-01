@@ -79,10 +79,6 @@ class Ettu
   def view_digest(view)
     return nil unless view.present?
 
-    if @@config.template_digestor.nil?
-      @@config.attempt_late_template_digestor_set
-    end
-
     @@config.template_digestor.digest(
       view,
       @controller.request.format.try(:to_sym),

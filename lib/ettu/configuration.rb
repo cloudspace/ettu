@@ -9,15 +9,6 @@ class Ettu
       set_defaults
     end
 
-    def attempt_late_template_digestor_set
-      if defined? ActionView::Digestor
-        # Attempt to use ActionView::Digestor on Rails 4
-        self.template_digestor = ActionView::Digestor
-      elsif defined? CacheDigests::TemplateDigestor
-        # Attempt to use CacheDigests::TemplateDigestor on Rails 3
-        self.template_digestor = CacheDigests::TemplateDigestor
-      end
-    end
 
     private
 
@@ -32,7 +23,34 @@ class Ettu
       # self.view = "#{controller_name}/#{action_name}"
       delete :view if key? :view
 
-      attempt_late_template_digestor_set
+      # Don't attempt to reset the template_digestor
+      # if one has already been found
+      unless self.template_digestor
+        self.template_digestor = LateTemplateDigestor.new(self)
+      end
+    end
+
+    class LateTemplateDigestor
+      def initialize(config)
+        @config = config
+      end
+
+      def self.digest(*args)
+        digestor = attempt_late_template_digestor_set
+        digestor.digest(*args)
+      end
+
+      private
+
+      def attempt_late_template_digestor_set
+        # Attempt to use ActionView::Digestor on Rails 4
+        if defined? ActionView::Digestor
+          @config.template_digestor = ActionView::Digestor
+        elsif defined? CacheDigests::TemplateDigestor
+          # Attempt to use CacheDigests::TemplateDigestor on Rails 3
+          @config.template_digestor = CacheDigests::TemplateDigestor
+        end
+      end
     end
   end
 end
