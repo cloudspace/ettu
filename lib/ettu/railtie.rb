@@ -9,17 +9,6 @@ class Ettu
         ActiveSupport.on_load :action_controller do
           ActionController::Base.send :include, FreshWhen
         end
-
-        if app.config.ettu.rails_4_development_hack
-          class BlackHole < Hash
-            def []=(k, v); end
-          end
-          module ::ActionView
-            class Digestor
-              @@cache = BlackHole.new
-            end
-          end
-        end
       end
 
     end

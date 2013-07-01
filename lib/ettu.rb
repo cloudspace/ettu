@@ -89,16 +89,12 @@ class Ettu
   # Jeremy Kemper
   # https://gist.github.com/jeremy/4211803
   def asset_digest(asset)
-    rails_version = Rails::VERSION::MAJOR
     return nil unless asset.present?
     # Check already computed assets (production)
-    # Using the Rails::VERSION is an ugly hack. I'm not happy about it.
-    if rails_version == 4 && digest = ActionView::Base.assets_manifest.assets[asset]
-      digest
-    elsif rails_version == 3 && manifest = Rails.application.config.assets.digests
+    if manifest = Rails.application.config.assets.digests
       manifest[asset]
     else
-      # Compute it in Rails (3|4)
+      # Compute it in
       Rails.application.assets[asset].digest
     end
   end
