@@ -131,7 +131,7 @@ In the mean time, you can enable a monkey-patch with:
 ```ruby
 # config/environments/development.rb
 My::Application.configure do
-  config.ettu.rails_4_development_hack = true
+  config.ettu.development_hack = true
 end
 ```
 
