@@ -1,4 +1,5 @@
-# Ettu
+Ettu
+====
 
 Using Rails `stale?` or `fresh_when`? Are your users seeing old view
 code even after new deploys? The Rails way `fresh_when(@product)`
@@ -15,7 +16,8 @@ all of this while allowing you to use the same syntax you're already
 accustomed to. So keep doing what you're doing, and let Ettu worry about
 changes to your view code.
 
-## Installation
+Installation
+------------
 
 ### Rails 4
 
@@ -27,7 +29,7 @@ And `$ bundle install`
 
 ### Rails 3
 
-Add Ettu and [CacheDigests](https://github.com/rails/cache_digests) to
+Add Ettu and [cache_digests](https://github.com/rails/cache_digests) to
 your Gemfile:
 
     gem 'ettu'
@@ -35,7 +37,8 @@ your Gemfile:
 
 And `$ bundle install`
 
-## Usage
+Usage
+-----
 
 Rails ETags can be used in the following way:
 
@@ -112,7 +115,8 @@ implementation. Ettu makes sure to pass all the options you specify to
 Rails (like the `public` option). It's even coded as a drop-in gem that
 won't cause problems if it's not installed.
 
-## RAILS_ENV=development Issues
+RAILS_ENV=development Issues
+----------------------------
 
 Until [rails/rails#10791](https://github.com/rails/rails/pull/10791)
 gets merged in, Ettu will not be able to detect changes in templates
@@ -129,7 +133,8 @@ My::Application.configure do
 end
 ```
 
-## Contributing
+Contributing
+------------
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
