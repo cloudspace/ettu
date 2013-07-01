@@ -77,6 +77,11 @@ class Ettu
   # https://gist.github.com/jeremy/4211803
   def view_digest(view)
     return nil unless view.present?
+
+    if @@config.template_digestor.nil? && Rails::VERSION::MAJOR == 3
+      raise "Ettu requires the cache_digests gem when using Rails v#{Rails::VERSION::STRING}"
+    end
+
     @@config.template_digestor.digest(
       view,
       @controller.request.format.try(:to_sym),
