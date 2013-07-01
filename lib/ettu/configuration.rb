@@ -43,13 +43,14 @@ class Ettu
       private
 
       def attempt_late_template_digestor_set
-        # Attempt to use ActionView::Digestor on Rails 4
-        if defined? ActionView::Digestor
-          @config.template_digestor = ActionView::Digestor
-        elsif defined? CacheDigests::TemplateDigestor
-          # Attempt to use CacheDigests::TemplateDigestor on Rails 3
-          @config.template_digestor = CacheDigests::TemplateDigestor
+        unless defined? CacheDigests::TemplateDigestor
+          # Attempt to load cache_digets
+          require 'cache_digests'
         end
+        # Attempt to use CacheDigests::TemplateDigestor on Rails 3
+        @config.template_digestor = CacheDigests::TemplateDigestor
+      rescue LoadError
+        raise "Ettu requires the cache_digests gem in Rails v#{Rails::VERSION::STRING}"
       end
     end
   end
