@@ -35,6 +35,9 @@ class Record
 end
 
 module Rails
+  module VERSION
+    MAJOR = ''
+  end
   def self.application
     @nested ||= Nester.new
   end
