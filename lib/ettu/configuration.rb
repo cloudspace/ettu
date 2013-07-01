@@ -26,11 +26,11 @@ class Ettu
       # Don't attempt to reset the template_digestor
       # if one has already been found
       unless self.template_digestor
-        self.template_digestor = LateTemplateDigestor.new(self)
+        self.template_digestor = LateLoadTemplateDigestor.new(self)
       end
     end
 
-    class LateTemplateDigestor
+    class LateLoadTemplateDigestor
       def initialize(config)
         @config = config
       end
