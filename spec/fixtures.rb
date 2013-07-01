@@ -50,3 +50,12 @@ Rails.application.assets['first.ext'].digest = 'first.ext.digest'
 Rails.application.assets['second.ext'].digest = 'second.ext.digest'
 Rails.application.config.assets.digests = nil
 
+module ActionView
+  class Base
+    def self.assets_manifest
+      @nested ||= Nester.new
+    end
+  end
+end
+ActionView::Base.assets_manifest.assets = {}
+
