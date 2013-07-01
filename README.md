@@ -22,7 +22,7 @@ Installation
 Add Ettu and [cache_digests](https://github.com/rails/cache_digests) to
 your Gemfile:
 
-    gem 'ettu'
+    gem 'ettu', '~> 3.0'
 
 And `$ bundle install`
 
