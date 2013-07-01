@@ -1,6 +1,6 @@
 # Ettu
 
-Using Rails 4's `stale?` or `fresh_when`? Are your users seeing old view
+Using Rails `stale?` or `fresh_when`? Are your users seeing old view
 code even after new deploys? The Rails way `fresh_when(@product)`
 doesn't account for changes in your view code, you have to do it
 yourself.
@@ -17,19 +17,26 @@ changes to your view code.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+### Rails 4
+
+Add Ettu to your Gemfile:
 
     gem 'ettu'
 
-And then execute:
+And `$ bundle install`
 
-    $ bundle
+### Rails 3
 
-And that's it. Ettu will be loaded on your next restart.
+Add Ettu and CacheDigests to your Gemfile:
+
+    gem 'ettu'
+    gem 'cache_digests'
+
+And `$ bundle install`
 
 ## Usage
 
-Rails 4 ETags can be used in the following way:
+Rails ETags can be used in the following way:
 
 ```ruby
 class ProductsController < ApplicationController
