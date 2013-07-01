@@ -31,6 +31,7 @@ describe Ettu do
 
   describe '.configure' do
     subject(:ettu) { Ettu.new(nil, {}, controller) }
+    after(:all) { Ettu.configure { |config| config.reset } }
 
     context 'when no options are specified' do
       before(:all) do
@@ -41,7 +42,6 @@ describe Ettu do
           config.view = 'custom/view'
         end
       end
-      after(:all) { Ettu.configure { |config| config.reset } }
 
       it 'will use the default js file' do
         expect(ettu.js_etag).to eq('custom.js.digest')
@@ -68,7 +68,6 @@ describe Ettu do
           config.view = false
         end
       end
-      after(:all) { Ettu.configure { |config| config.reset } }
 
       it 'will disable js etag' do
         expect(ettu.js_etag).to eq(nil)
