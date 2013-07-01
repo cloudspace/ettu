@@ -27,7 +27,8 @@ And `$ bundle install`
 
 ### Rails 3
 
-Add Ettu and CacheDigests to your Gemfile:
+Add Ettu and [CacheDigests](https://github.com/rails/cache_digests) to
+your Gemfile:
 
     gem 'ettu'
     gem 'cache_digests'
