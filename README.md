@@ -16,6 +16,12 @@ all of this while allowing you to use the same syntax you're already
 accustomed to. So keep doing what you're doing, and let Ettu worry about
 changes to your view code.
 
+### Rails 3
+
+Have a Rails 3 project? The [v3 branch]
+(https://github.com/cloudspace/ettu/tree/v3) (and 3.* releases) are set
+up to support it.
+
 Installation
 ------------
 
