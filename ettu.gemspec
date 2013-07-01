@@ -19,7 +19,8 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 1.9'
 
-  spec.add_dependency 'rails', '>= 3.0'
+  spec.add_dependency 'rails', '~> 3.0'
+  spec.add_dependency 'cache_digests'
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
