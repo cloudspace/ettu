@@ -1,7 +1,7 @@
 Ettu
 ====
 
-Using Rails `stale?` or `fresh_when`? Are your users seeing old view
+Using Rails 4's `stale?` or `fresh_when`? Are your users seeing old view
 code even after new deploys? The Rails way `fresh_when(@product)`
 doesn't account for changes in your view code, you have to do it
 yourself.
@@ -19,21 +19,9 @@ changes to your view code.
 Installation
 ------------
 
-### Rails 4
-
 Add Ettu to your Gemfile:
 
     gem 'ettu'
-
-And `$ bundle install`
-
-### Rails 3
-
-Add Ettu and [cache_digests](https://github.com/rails/cache_digests) to
-your Gemfile:
-
-    gem 'ettu'
-    gem 'cache_digests'
 
 And `$ bundle install`
 
@@ -118,8 +106,6 @@ won't cause problems if it's not installed.
 RAILS_ENV=development Issues
 ----------------------------
 
-### Rails 4
-
 Until [rails/rails#10791](https://github.com/rails/rails/pull/10791)
 gets merged in, Ettu will not be able to detect changes in templates
 while in the **development** environment. This is not an issue that
@@ -132,18 +118,6 @@ In the mean time, you can enable a monkey-patch with:
 # config/environments/development.rb
 My::Application.configure do
   config.ettu.development_hack = true
-end
-```
-
-### Rails 3
-
-The cache_digests gem has already patched issue #10791. All you need to
-do is disable `cache_template_loading`.
-
-```ruby
-# config/environments/development.rb
-My::Application.configure do
-  config.action_view.cache_template_loading
 end
 ```
 
