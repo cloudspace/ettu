@@ -35,7 +35,7 @@ class Ettu
         @config = config
       end
 
-      def self.digest(*args)
+      def digest(*args)
         digestor = attempt_late_template_digestor_set
         digestor.digest(*args)
       end
