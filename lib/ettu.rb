@@ -8,6 +8,7 @@ require 'ettu/configuration'
 require 'ettu/fresh_when'
 require 'ettu/railtie' if defined? Rails::Railtie
 
+
 class Ettu
   attr_reader :options
 
@@ -87,14 +88,17 @@ class Ettu
 
   # Jeremy Kemper
   # https://gist.github.com/jeremy/4211803
-  # Check precompiled asset manifest (production) or compute the digest (dev).
   def asset_digest(asset)
+    rails_version = Rails::VERSION::MAJOR
     return nil unless asset.present?
-    # Is Rails.application.config.assets.digests needed?
-    # Seems to always be nil...
-    if manifest = Rails.application.config.assets.digests
+    # Check already computed assets (production)
+    # Using the Rails::VERSION is an ugly hack. I'm not happy about it.
+    if rails_version == 4 && digest = ActionView::Base.assets_manifest.assets[asset]
+      digest
+    elsif rails_version == 3 && manifest = Rails.application.config.assets.digests
       manifest[asset]
     else
+      # Compute it in Rails (3|4)
       Rails.application.assets[asset].digest
     end
   end

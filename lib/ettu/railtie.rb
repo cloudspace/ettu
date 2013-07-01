@@ -20,8 +20,8 @@ class Ettu
             end
           end
         end
-
       end
+
     end
   end
 end
