@@ -23,7 +23,11 @@ class Ettu
       delete :view if key? :view
 
       if defined? ActionView::Digestor
+        # Attempt to use ActionView::Digestor on Rails 4
         self.template_digestor = ActionView::Digestor
+      elsif defined? CacheDigests::TemplateDigestor
+        # Attempt to use CacheDigests::TemplateDigestor on Rails 3
+        self.template_digestor = CacheDigests::TemplateDigestor
       end
     end
   end
