@@ -43,12 +43,9 @@ class Ettu
       private
 
       def attempt_late_template_digestor_set
-        # Attempt to use ActionView::Digestor on Rails 4
+        # Attempt to use ActionView::Digestor
         if defined? ActionView::Digestor
           @config.template_digestor = ActionView::Digestor
-        elsif defined? CacheDigests::TemplateDigestor
-          # Attempt to use CacheDigests::TemplateDigestor on Rails 3
-          @config.template_digestor = CacheDigests::TemplateDigestor
         end
       end
     end
