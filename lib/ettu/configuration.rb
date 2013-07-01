@@ -9,6 +9,16 @@ class Ettu
       set_defaults
     end
 
+    def attempt_late_template_digestor_set
+      if defined? ActionView::Digestor
+        # Attempt to use ActionView::Digestor on Rails 4
+        self.template_digestor = ActionView::Digestor
+      elsif defined? CacheDigests::TemplateDigestor
+        # Attempt to use CacheDigests::TemplateDigestor on Rails 3
+        self.template_digestor = CacheDigests::TemplateDigestor
+      end
+    end
+
     private
 
     def set_defaults
@@ -22,22 +32,7 @@ class Ettu
       # self.view = "#{controller_name}/#{action_name}"
       delete :view if key? :view
 
-      set_template_digestor
-    end
-
-    def set_template_digestor
-      if defined? ActionView::Digestor
-        # Attempt to use ActionView::Digestor on Rails 4
-        self.template_digestor = ActionView::Digestor
-      else
-        # Attempt to use CacheDigests::TemplateDigestor
-        require 'cache_digests'
-        if defined? CacheDigests::TemplateDigestor
-          self.template_digestor = CacheDigests::TemplateDigestor
-        end
-      end
-    rescue LoadError
-      raise "Ettu requires the cache_digests gem when using Rails v#{Rails::VERSION::STRING}"
+      attempt_late_template_digestor_set
     end
   end
 end
