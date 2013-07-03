@@ -2,6 +2,7 @@ require 'active_support/concern'
 require 'active_support/ordered_options'
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/object/try'
+require 'active_support/core_ext/module/aliasing'
 
 require 'ettu/version'
 require 'ettu/configuration'

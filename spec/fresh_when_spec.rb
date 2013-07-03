@@ -29,14 +29,14 @@ describe Ettu::FreshWhen do
   end
 
   it 'passes nil as the first argument to original fresh_when' do
-    controller.should_receive(:old_fresh_when) do |r, h|
+    controller.should_receive(:fresh_when_without_ettu) do |r, h|
       r.nil?
     end
     controller.fresh_when record, hash
   end
 
   it 'passes extra options to original fresh_when' do
-    controller.should_receive(:old_fresh_when) do |r, h|
+    controller.should_receive(:fresh_when_without_ettu) do |r, h|
       hash.each_pair.all? do |k, v|
         h[k] == v
       end
