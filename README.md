@@ -46,10 +46,9 @@ end
 ```
 
 Ettu wants you to keep using either syntax, and let it worry about the
-view code. By default, it will add in the asset fingerprints of
-`application.js` and `application.css` along with the cache digest of
-the current action into the calculation for the final ETag sent to the
-browser.
+view code. By default, it will add in the fingerprints of your
+precompiled assets along with the cache digest of the current action
+into the calculation for the final ETag sent to the browser.
 
 ### Configuring
 
@@ -68,34 +67,24 @@ Of course, you can override Ettu's default behavior:
 ```ruby
 # config/initializers/ettu.rb
 Ettu.configure do |config|
-  # Set the default js file
-  config.js = 'app.js'
-  # Or don't account for javascript
-  # config.js = false
-
-  # Set the default css file
-  config.css = 'style.css'
-  # Or don't account for css
-  # config.css = false
-
   # Add in extra assets to account for
-  config.assets = ['first.js', 'second.css']
+  config.assets += ['first.js', 'second.css']
 end
 ```
 
 Or each can be passed on an individual basis:
 
-    fresh_when @product, js: 'app.js', css: 'style.css', assets: 'super.css'
+    fresh_when @product, assets: 'super.css'
 
 Additionally, you can specify a different template to calculate with the
 `view` option:
 
-    fresh_when @product, view: "products/index"
+    fresh_when @product, view: 'products/index'
 
 You can even stop Ettu from accounting for any of them by setting the
 value to `false`:
 
-    fresh_when @product, js: false, css: false, view: false
+    fresh_when @product, assets: false, view: false
 
 ### What about Rails' default `fresh_when`?
 
