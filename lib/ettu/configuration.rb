@@ -25,8 +25,16 @@ class Ettu
     end
 
     class LateLoadAssets
+      def initialize
+        @array = []
+      end
+
       def to_a
-        ::Rails.application.config.assets.digests.keys
+        ::Rails.application.config.assets.digests.keys + [*@array]
+      end
+
+      def method_missing(method, *args, &block)
+        @array.send method, *args, &block
       end
     end
 
