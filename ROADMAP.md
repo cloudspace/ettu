@@ -6,4 +6,4 @@ Ettu Roadmap
     - Separate gem into branches
     - v3 branch will track Rails 3
     - v4 branch will track Rails 4
-- [ ] Default assets to those set in Rails.application.config.assets.precompile
+- [x] Default assets to those set in Rails.application.config.assets
