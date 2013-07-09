@@ -21,11 +21,7 @@ class Ettu
       # self.view = "#{controller_name}/#{action_name}"
       delete :view if key? :view
 
-      # Don't attempt to reset the template_digestor
-      # if one has already been found
-      unless self.template_digestor
-        self.template_digestor = LateLoadTemplateDigestor.new(self)
-      end
+      self.template_digestor = LateLoadTemplateDigestor.new(self)
     end
 
     class LateLoadAssets
