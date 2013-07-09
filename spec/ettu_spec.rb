@@ -70,8 +70,13 @@ describe Ettu do
        'first.ext.manifest', 'second.ext.manifest'
       ]
       result = ettu.etags
-      expect(ettu.etags).to include(*expected)
+      expect(result).to include(*expected)
       expect(expected).to include(*result)
+    end
+
+    it 'will not allow nils' do
+      ettu = Ettu.new(nil, {assets: [nil, nil, nil]}, controller )
+      expect(ettu.etags).not_to include(nil)
     end
   end
 

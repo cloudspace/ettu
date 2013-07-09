@@ -34,6 +34,7 @@ class Ettu
     etags = [*response_etag]
     etags << view_etag
     etags.concat asset_etags
+    etags.compact
   end
 
   def last_modified
