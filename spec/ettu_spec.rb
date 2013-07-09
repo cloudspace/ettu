@@ -9,16 +9,8 @@ describe Ettu do
   end
 
   context 'when supplied with options' do
-    let(:hash) { { js: 'custom.js', css: 'custom.css', assets: 'first.ext', view: 'custom/action' } }
+    let(:hash) { { assets: 'first.ext', view: 'custom/action' } }
     subject(:ettu) { Ettu.new(hash, {}, controller) }
-
-    it 'will use :js option over default' do
-      expect(ettu.js_etag).to eq('custom.js.digest')
-    end
-
-    it 'will use :css option over default' do
-      expect(ettu.css_etag).to eq('custom.css.digest')
-    end
 
     it 'will use :asset option over default' do
       expect(ettu.asset_etags).to eq(['first.ext.digest'])
@@ -36,19 +28,9 @@ describe Ettu do
     context 'when no options are specified' do
       before(:all) do
         Ettu.configure do |config|
-          config.js = 'custom.js'
-          config.css = 'custom.css'
           config.assets = ['first.ext', 'second.ext']
           config.view = 'custom/view'
         end
-      end
-
-      it 'will use the default js file' do
-        expect(ettu.js_etag).to eq('custom.js.digest')
-      end
-
-      it 'will use the default css file' do
-        expect(ettu.css_etag).to eq('custom.css.digest')
       end
 
       it 'will use the default asset files' do
@@ -63,18 +45,13 @@ describe Ettu do
     context 'when setting default to false' do
       before(:all) do
         Ettu.configure do |config|
-          config.js = false
-          config.css = false
+          config.assets = false
           config.view = false
         end
       end
 
-      it 'will disable js etag' do
-        expect(ettu.js_etag).to eq(nil)
-      end
-
-      it 'will disable css etag' do
-        expect(ettu.css_etag).to eq(nil)
+      it 'will disable asset etags' do
+        expect(ettu.asset_etags).to eq([nil])
       end
 
       it 'will disable view etags' do
@@ -86,7 +63,12 @@ describe Ettu do
   describe '#etags' do
     let(:ettu) { Ettu.new(record, {}, controller) }
     it 'will collect all etags' do
-      expected = [record, 'controller_name/action_name.digest', 'application.js.digest', 'application.css.digest']
+      expected = [
+        record, 'controller_name/action_name.digest',
+       'application.js.manifest', 'application.css.manifest',
+       'custom.js.manifest', 'custom.css.manifest',
+       'first.ext.manifest', 'second.ext.manifest'
+      ]
       result = ettu.etags
       expect(ettu.etags).to include(*expected)
       expect(expected).to include(*result)
