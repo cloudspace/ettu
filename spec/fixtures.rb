@@ -52,3 +52,10 @@ Rails.application.config.assets.digests = Rails.application.assets.keys.reduce({
   hash[asset.to_s] = asset.to_s + '.manifest'
   hash
 end
+
+class RandomString
+  @@letters = ('a'..'z').to_a
+  def self.rand(length = 50)
+    (0...length).map{ @@letters.sample }.join
+  end
+end

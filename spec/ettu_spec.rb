@@ -45,6 +45,21 @@ describe Ettu do
       end
     end
 
+    context 'can append additional assets' do
+      let(:configuration) { Ettu::Configuration.new }
+      let(:random_string) { RandomString.rand }
+
+      it 'with +=' do
+        configuration.assets += [random_string]
+        expect(configuration.assets).to include(random_string)
+      end
+
+      it 'with <<' do
+        configuration.assets << random_string
+        expect(configuration.assets).to include(random_string)
+      end
+    end
+
     context 'when setting default to false' do
       before(:all) do
         Ettu.configure do |config|
