@@ -47,7 +47,7 @@ describe Ettu do
 
     context 'can append additional assets' do
       let(:configuration) { Ettu::Configuration.new }
-      let(:random_string) { RandomString.rand }
+      let(:random_string) { SecureRandom.hex }
 
       it 'with +=' do
         configuration.assets += [random_string]

@@ -61,10 +61,3 @@ ActionView::Base.assets_manifest.assets = Rails.application.assets.keys.reduce({
   hash[asset] = asset.to_s + '.manifest'
   hash
 end
-
-class RandomString
-  @@letters = ('a'..'z').to_a
-  def self.rand(length = 50)
-    (0...length).map{ @@letters.sample }.join
-  end
-end
