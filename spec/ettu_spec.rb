@@ -4,11 +4,11 @@ describe Ettu do
   let(:controller) { Controller.new }
   let(:record) { Record.new(DateTime.now) }
   let(:hash) { { etag: record, last_modified: DateTime.now } }
-  before(:all) do
-    Ettu.configure { |config| config.template_digestor = Digestor }
-  end
 
   context 'when supplied with options' do
+    before(:all) do
+      Ettu.configure { |config| config.template_digestor = Digestor }
+    end
     let(:hash) { { assets: 'first.ext', view: 'custom/action' } }
     subject(:ettu) { Ettu.new(hash, {}, controller) }
 
@@ -23,6 +23,9 @@ describe Ettu do
 
   describe '.configure' do
     subject(:ettu) { Ettu.new(nil, {}, controller) }
+    before(:all) do
+      Ettu.configure { |config| config.template_digestor = Digestor }
+    end
     after(:all) { Ettu.configure { |config| config.reset } }
 
     context 'when no options are specified' do
@@ -61,7 +64,11 @@ describe Ettu do
   end
 
   describe '#etags' do
+    before(:all) do
+      Ettu.configure { |config| config.template_digestor = Digestor }
+    end
     let(:ettu) { Ettu.new(record, {}, controller) }
+
     it 'will collect all etags' do
       expected = [
         record, 'controller_name/action_name.digest',
