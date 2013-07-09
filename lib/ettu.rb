@@ -33,10 +33,6 @@ class Ettu
   def etags
     etags = [*response_etag]
     etags << view_etag
-    if @controller.request.format.try(:html?)
-      etags << js_etag
-      etags << css_etag
-    end
     etags.concat asset_etags
   end
 
@@ -52,16 +48,6 @@ class Ettu
     default_view = @@config.fetch(:view, "#{@controller.controller_name}/#{@controller.action_name}")
     view = @options.fetch(:view, default_view)
     @view_etag ||= view_digest(view)
-  end
-
-  def js_etag
-    js = @options.fetch(:js, @@config.js)
-    asset_etag js
-  end
-
-  def css_etag
-    css = @options.fetch(:css, @@config.css)
-    asset_etag css
   end
 
   def asset_etags

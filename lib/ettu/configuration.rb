@@ -13,9 +13,7 @@ class Ettu
     private
 
     def set_defaults
-      self.js = 'application.js'
-      self.css = 'application.css'
-      self.assets = []
+      self.assets = LateLoadAssets.new
 
       # Don't actually set view by default.
       # This'll allow #fetch to return the real default
@@ -27,6 +25,12 @@ class Ettu
       # if one has already been found
       unless self.template_digestor
         self.template_digestor = LateLoadTemplateDigestor.new(self)
+      end
+    end
+
+    class LateLoadAssets
+      def to_a
+        ::ActionView::Base.assets_manifest.assets.keys
       end
     end
 
