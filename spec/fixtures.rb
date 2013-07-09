@@ -57,5 +57,7 @@ module ActionView
     end
   end
 end
-ActionView::Base.assets_manifest.assets = {}
-
+ActionView::Base.assets_manifest.assets = Rails.application.assets.keys.reduce({}) do |hash, asset|
+  hash[asset] = asset.to_s + '.manifest'
+  hash
+end
