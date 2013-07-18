@@ -44,6 +44,11 @@ class Ettu
     end
 
     class LateLoadAssets < LateLoad
+
+      def to_a
+        super
+      end
+
       def defaults
         ::ActionView::Base.assets_manifest.assets.keys
       end
