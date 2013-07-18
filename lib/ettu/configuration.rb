@@ -21,25 +21,31 @@ class Ettu
       # self.view = "#{controller_name}/#{action_name}"
       delete :view if key? :view
 
-      self.template_digestor = ActionView::Digestor
+      self.template_digestor = LateLoadTempalteDigestor.new(self, :template_digestor)
     end
 
-    class LateLoadAssets
+    class LateLoad
       def initialize(config, name)
         @config = config
         @name = name
       end
 
       def method_missing(method, *args, &block)
-        assets = Array.new(defaults)
-        @config[@name] = array
-        assets.send method, *args, &block
+        late_load = defaults
+        @config[@name] = late_load
+        late_load.send method, *args, &block
       end
+    end
 
-      private
-
+    class LateLoadTempalteDigestor < LateLoad
       def defaults
-        ::ActionView::Base.assets_manifest.assets.keys
+        ::ActionView::Digestor
+      end
+    end
+
+    class LateLoadAssets < LateLoad
+      def defaults
+        Array.new(::ActionView::Base.assets_manifest.assets.keys)
       end
     end
   end
