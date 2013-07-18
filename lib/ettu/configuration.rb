@@ -45,7 +45,7 @@ class Ettu
 
     class LateLoadAssets < LateLoad
       def defaults
-        Array.new(::ActionView::Base.assets_manifest.assets.keys)
+        ::ActionView::Base.assets_manifest.assets.keys
       end
     end
   end
