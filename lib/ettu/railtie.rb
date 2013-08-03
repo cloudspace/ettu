@@ -5,34 +5,21 @@ class Ettu
 
       unless app.config.ettu.disabled
         require 'ettu'
-        if app.config.ettu.development_hack
+        ActiveSupport.on_load :action_controller do
+          ActionController::Base.send :include, FreshWhen
+        end
 
+        if app.config.ettu.development_hack
           class BlackHole < Hash
             def []=(*); end
           end
-          module EtagBuster
-            extend ActiveSupport::Concern
-            included do
-              def fresh_when(*); end
-            end
-          end
-
           module ::ActionView
             class Digestor
               @@cache = BlackHole.new
             end
           end
-          ActiveSupport.on_load :action_controller do
-            ActionController::Base.send :include, EtagBuster
-          end
-
-        else
-
-          ActiveSupport.on_load :action_controller do
-            ActionController::Base.send :include, FreshWhen
-          end
-
         end
+
       end
 
     end
