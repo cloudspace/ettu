@@ -8,12 +8,12 @@ class Ettu
         if app.config.ettu.development_hack
 
           class BlackHole < Hash
-            def []=(k, v); end
+            def []=(*); end
           end
           module EtagBuster
             extend ActiveSupport::Concern
             included do
-              def fresh_when(*args); end
+              def fresh_when(*); end
             end
           end
 
