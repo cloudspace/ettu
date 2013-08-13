@@ -7,6 +7,14 @@
 
 require 'date'
 require 'active_support/ordered_options'
+require 'securerandom'
+RSpec::Matchers.define :include_hash do |expected|
+  match do |actual|
+    !actual.nil? && 
+      !actual.empty? && 
+      (actual.to_a & expected.to_a) == expected.to_a
+  end
+end
 
 require 'simplecov'
 SimpleCov.start { add_filter '/spec/' }
