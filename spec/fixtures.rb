@@ -48,5 +48,7 @@ Rails.application.assets['custom.js'].digest = 'custom.js.digest'
 Rails.application.assets['custom.css'].digest = 'custom.css.digest'
 Rails.application.assets['first.ext'].digest = 'first.ext.digest'
 Rails.application.assets['second.ext'].digest = 'second.ext.digest'
-Rails.application.config.assets.digests = nil
-
+Rails.application.config.assets.digests = Rails.application.assets.keys.reduce({}) do |hash, asset|
+  hash[asset.to_s] = asset.to_s + '.manifest'
+  hash
+end

@@ -13,7 +13,7 @@ describe Ettu do
     subject(:ettu) { Ettu.new(hash, {}, controller) }
 
     it 'will use :asset option over default' do
-      expect(ettu.asset_etags).to eq(['first.ext.digest'])
+      expect(ettu.asset_etags).to eq(['first.ext.manifest'])
     end
 
     it 'will use :view option over default' do
@@ -34,7 +34,7 @@ describe Ettu do
       end
 
       it 'will use the default asset files' do
-        expect(ettu.asset_etags).to eq(['first.ext.digest', 'second.ext.digest'])
+        expect(ettu.asset_etags).to eq(['first.ext.manifest', 'second.ext.manifest'])
       end
 
       it 'will use the default view file' do
