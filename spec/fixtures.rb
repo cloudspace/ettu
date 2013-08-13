@@ -13,9 +13,12 @@ class Controller < Nester
     self.action_name = 'action_name'
   end
 
-  def fresh_when(*args)
-    :old_fresh_when
+  module Freshness
+    def fresh_when(*args)
+      [*args]
+    end
   end
+  include Freshness
 
   include ::Ettu::FreshWhen
 end
