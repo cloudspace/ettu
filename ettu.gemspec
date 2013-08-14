@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Ettu::VERSION
   spec.author        = 'Justin Ridgewell'
   spec.email         = 'jridgewell@cloudspace.com'
-  spec.description   = %q{Account for js, css, and views when using ETags.}
-  spec.summary       = %q{Account for view code when using ETags.}
+  spec.summary       = %q{Add Assets and Views into the Rails ETag Equation.}
   spec.homepage      = 'http://github.com/cloudspace/ettu'
   spec.license       = 'MIT'
 
