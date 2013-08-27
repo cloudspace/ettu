@@ -100,21 +100,16 @@ implementation. Ettu makes sure to pass all the options you specify to
 Rails (like the `public` option). It's even coded as a drop-in gem that
 won't cause problems if it's not installed.
 
-RAILS_ENV=development Issues
-----------------------------
+RAILS_ENV=development Gotchas
+-----------------------------
 
-Until [rails/rails#11768](https://github.com/rails/rails/pull/11768)
-gets merged in, Ettu will not be able to detect changes in templates
-while in the **development** environment. This is not an issue that
-affects staging or production, because the template cache will be
-flushed after each deploy.
-
-In the mean time, you can enable a monkey-patch with:
+In order for Rails to detect changes to templates when testing `perform_caching`
+in the **development** environment, you must disable `cache_template_loading`.
 
 ```ruby
 # config/environments/development.rb
 My::Application.configure do
-  config.ettu.development_hack = true
+  config.action_view.cache_template_loading = false
 end
 ```
 
