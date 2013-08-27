@@ -95,11 +95,11 @@ implementation. Ettu makes sure to pass all the options you specify to
 Rails (like the `public` option). It's even coded as a drop-in gem that
 won't cause problems if it's not installed.
 
-RAILS_ENV=development Issues
-----------------------------
+RAILS_ENV=development Gotchas
+-----------------------------
 
-In order for Ettu to detect changes to templates in the **development**
-environment, you must disable `cache_template_loading`.
+In order for Rails to detect changes to templates when testing `perform_caching`
+in the **development** environment, you must disable `cache_template_loading`.
 
 ```ruby
 # config/environments/development.rb
