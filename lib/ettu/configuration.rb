@@ -43,7 +43,7 @@ class Ettu
       end
 
       def defaults
-        ::Rails.application.config.assets.digests.keys
+        ::Rails.application.config.assets.digests.try(:keys) || []
       end
     end
 
