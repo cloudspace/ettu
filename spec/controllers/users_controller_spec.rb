@@ -42,7 +42,9 @@ describe UsersController do
 
       it 'includes all views digest' do
         path = controller.request.path_parameters
-        page = "#{path['controller']}/#{path['action']}.html"
+        page = ::ActionView::Digestor.cache.keys.first
+
+        expect(page).to match(/#{path['controller']}\/#{path['action']}/)
         expect(etags).to include(::ActionView::Digestor.cache[page])
       end
 
