@@ -7,6 +7,9 @@ describe Ettu do
   let(:record) { Record.new(DateTime.now) }
   let(:hash) { { etag: record, last_modified: DateTime.now } }
 
+  # NOTE: assets were created by running `rake assets:precompile`.
+  # It compiled application.js and application.css (but NOT
+  # test.js)
   let(:assets) { ::ActionView::Base.assets_manifest.assets }
   let(:files) { assets.keys }
   let(:digests) { assets.values }
@@ -36,6 +39,9 @@ describe Ettu do
 
   context 'when given asset that is not precompiled' do
     it 'will digest the file if it exists' do
+      # NOTE: test.js is located at dummy/app/assets/javascripts/test.js
+      # It was added AFTER running `rake assets:precompile` (which compiled
+      # application.js and application.css).
       def hash; { assets: 'test.js' }; end
 
       expect(ettu.asset_etags).not_to be_empty
