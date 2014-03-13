@@ -6,6 +6,10 @@ describe Ettu::FreshWhen do
     Ettu.configure { |config| config.template_digestor = Digestor }
   end
 
+  after(:all) do
+    Ettu.configure { |config| config.reset }
+  end
+
   let(:record) { Record.new(DateTime.now) }
   let(:hash) { { random: true, options: true } }
   subject(:controller) { Controller.new }

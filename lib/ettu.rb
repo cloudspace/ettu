@@ -78,8 +78,9 @@ class Ettu
   def asset_digest(asset)
     return nil unless asset.present?
     # Check already computed assets (production)
-    if manifest = Rails.application.config.assets.digests
-      manifest[asset]
+    manifest = Rails.application.config.assets.digests
+    if digest = manifest.try(:[], asset)
+      digest
     else
       # Compute it in
       Rails.application.assets[asset].digest
