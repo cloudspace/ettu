@@ -1,7 +1,5 @@
-Ettu
+Ettu [![Build Status](https://travis-ci.org/cloudspace/ettu.png?branch=v3)](https://travis-ci.org/cloudspace/ettu)
 ====
-
-[![Build Status](https://travis-ci.org/cloudspace/ettu.png?branch=v3)](https://travis-ci.org/cloudspace/ettu)
 
 Using Rails 3's `stale?` or `fresh_when`? Are your users seeing old view
 code even after new deploys? The Rails way `fresh_when(@product)`
