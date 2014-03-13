@@ -5,10 +5,6 @@ rvm:
   - jruby-19mode
   - rbx
 gemfile:
-  - gemfiles/4.0.0.gemfile
-  - gemfiles/4.0.1.gemfile
-  - gemfiles/4.0.2.gemfile
-  - gemfiles/4.0.3.gemfile
-  - gemfiles/4.0.4.gemfile
-  - gemfiles/4.1.0.gemfile
+  - gemfiles/4.0.gemfile
+  - gemfiles/4.1.gemfile
 script: 'bundle exec rake'
