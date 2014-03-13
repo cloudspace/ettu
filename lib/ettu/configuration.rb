@@ -21,7 +21,7 @@ class Ettu
       # self.view = "#{controller_name}/#{action_name}"
       delete :view if key? :view
 
-      self.template_digestor = LateLoadTempalteDigestor.new(self, :template_digestor)
+      self.template_digestor = LateLoadTemplateDigestor.new(self, :template_digestor)
     end
 
     class LateLoad
@@ -37,20 +37,19 @@ class Ettu
       end
     end
 
-    class LateLoadTempalteDigestor < LateLoad
-      def defaults
-        ::ActionView::Digestor
-      end
-    end
-
     class LateLoadAssets < LateLoad
-
       def to_a
         super
       end
 
       def defaults
         ::ActionView::Base.assets_manifest.assets.keys
+      end
+    end
+
+    class LateLoadTemplateDigestor < LateLoad
+      def defaults
+        ::ActionView::Digestor
       end
     end
   end

@@ -11,7 +11,6 @@ class Controller < Nester
     self.request.format = 'html'
     self.controller_name = 'controller_name'
     self.action_name = 'action_name'
-    self.template_digestor = ::ActionView::Digestor
   end
 
   module Freshness
