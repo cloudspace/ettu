@@ -8,7 +8,7 @@ class Controller < Nester
   def initialize
     super
 
-    self.request.format['html?'] = true
+    self.request.format = 'html'
     self.controller_name = 'controller_name'
     self.action_name = 'action_name'
   end
@@ -35,23 +35,4 @@ class Record
   def initialize(updated_at)
     @updated_at = updated_at
   end
-end
-
-module Rails
-  module VERSION
-    MAJOR = ''
-  end
-  def self.application
-    @nested ||= Nester.new
-  end
-end
-Rails.application.assets['application.js'].digest = 'application.js.digest'
-Rails.application.assets['application.css'].digest = 'application.css.digest'
-Rails.application.assets['custom.js'].digest = 'custom.js.digest'
-Rails.application.assets['custom.css'].digest = 'custom.css.digest'
-Rails.application.assets['first.ext'].digest = 'first.ext.digest'
-Rails.application.assets['second.ext'].digest = 'second.ext.digest'
-Rails.application.config.assets.digests = Rails.application.assets.keys.reduce({}) do |hash, asset|
-  hash[asset.to_s] = asset.to_s + '.manifest'
-  hash
 end

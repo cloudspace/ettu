@@ -1,19 +1,35 @@
 require 'spec_helper'
 
 describe Ettu do
+  subject(:ettu) { Ettu.new(hash, {}, controller) }
+
   let(:controller) { Controller.new }
   let(:record) { Record.new(DateTime.now) }
   let(:hash) { { etag: record, last_modified: DateTime.now } }
 
-  context 'when supplied with options' do
-    before(:all) do
-      Ettu.configure { |config| config.template_digestor = Digestor }
+  # NOTE: assets were created by running `rake assets:precompile`.
+  # It compiled application.js and application.css (but NOT
+  # test.js)
+  let(:assets) { Rails.application.config.assets.digests }
+  let(:files) { assets.keys.reject { |f| f[/index/] } }
+  let(:digests) { assets.values }
+
+  before(:each) do
+    Ettu.configure do |config|
+      config.reset
+      config.template_digestor = Digestor
     end
-    let(:hash) { { assets: 'first.ext', view: 'custom/action' } }
-    subject(:ettu) { Ettu.new(hash, {}, controller) }
+  end
+
+  after(:all) do
+    Ettu.configure { |config| config.reset }
+  end
+
+  context 'when supplied with options' do
+    let(:hash) { { assets: files.first, view: 'custom/action' } }
 
     it 'will use :asset option over default' do
-      expect(ettu.asset_etags).to eq(['first.ext.manifest'])
+      expect(ettu.asset_etags).to eq([digests.first])
     end
 
     it 'will use :view option over default' do
@@ -21,26 +37,34 @@ describe Ettu do
     end
   end
 
-  describe '.configure' do
-    subject(:ettu) { Ettu.new(nil, {}, controller) }
-    before(:all) do
-      Ettu.configure { |config| config.template_digestor = Digestor }
+  context 'when given asset that is not precompiled' do
+    it 'will digest the file if it exists' do
+      # NOTE: test.js is located at dummy/app/assets/javascripts/test.js
+      # It was added AFTER running `rake assets:precompile` (which compiled
+      # application.js and application.css).
+      def hash; { assets: 'test.js' }; end
+
+      expect(ettu.asset_etags).not_to be_empty
     end
-    after(:all) { Ettu.configure { |config| config.reset } }
+
+    it 'will throw error if file does not exist' do
+      def hash; { assets: 'does_not_exist' }; end
+
+      expect{ ettu.asset_etags }.to raise_error
+    end
+  end
+
+  describe '.configure' do
+    let(:hash) { nil }
 
     context 'when no options are specified' do
-      before(:all) do
-        Ettu.configure do |config|
-          config.assets = ['first.ext', 'second.ext']
-          config.view = 'custom/view'
-        end
-      end
-
       it 'will use the default asset files' do
-        expect(ettu.asset_etags).to eq(['first.ext.manifest', 'second.ext.manifest'])
+        expect(ettu.asset_etags).to eq(digests)
       end
 
       it 'will use the default view file' do
+        Ettu.configure { |config| config.view = 'custom/view' }
+
         expect(ettu.view_etag).to eq('custom/view.digest')
       end
     end
@@ -61,43 +85,34 @@ describe Ettu do
     end
 
     context 'when setting default to false' do
-      before(:all) do
-        Ettu.configure do |config|
-          config.assets = false
-          config.view = false
-        end
-      end
-
       it 'will disable asset etags' do
+        Ettu.configure { |config| config.assets = false }
+
         expect(ettu.asset_etags).to eq([nil])
       end
 
       it 'will disable view etags' do
+        Ettu.configure { |config| config.view = false }
+
         expect(ettu.view_etag).to eq(nil)
       end
     end
   end
 
   describe '#etags' do
-    before(:all) do
-      Ettu.configure { |config| config.template_digestor = Digestor }
-    end
-    let(:ettu) { Ettu.new(record, {}, controller) }
+    subject(:ettu) { Ettu.new(record, {}, controller) }
 
     it 'will collect all etags' do
-      expected = [
-        record, 'controller_name/action_name.digest',
-       'application.js.manifest', 'application.css.manifest',
-       'custom.js.manifest', 'custom.css.manifest',
-       'first.ext.manifest', 'second.ext.manifest'
-      ]
+      expected = [record, 'controller_name/action_name.digest'] | digests
       result = ettu.etags
+
       expect(result).to include(*expected)
       expect(expected).to include(*result)
     end
 
     it 'will not allow nils' do
       ettu = Ettu.new(nil, {assets: [nil, nil, nil]}, controller )
+
       expect(ettu.etags).not_to include(nil)
     end
   end
