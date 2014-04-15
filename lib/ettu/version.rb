@@ -1,3 +1,3 @@
 class Ettu
-  VERSION = '4.1.8'
+  VERSION = '4.2.0'
 end

@@ -25,7 +25,7 @@ end
 
 class Digestor
   def self.method_missing(name, *args, &block)
-    args.first.to_s + '.digest'
+    args.first[:name].to_s + '.digest'
   end
 end
 

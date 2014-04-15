@@ -66,11 +66,7 @@ class Ettu
   def view_digest(view)
     return nil unless view.present?
 
-    @@config.template_digestor.digest(
-      view,
-      @controller.request.format.try(:to_sym),
-      @controller.lookup_context
-    )
+    @@config.template_digestor.digest(name: view, finder: @controller.lookup_context)
   end
 
   # Jeremy Kemper
